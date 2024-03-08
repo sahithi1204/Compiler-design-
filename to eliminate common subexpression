@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char expression[100];
+    printf("Enter the expression: ");
+    scanf("%s", expression);
+
+    // Check for common subexpressions
+    for (int i = 0; i < strlen(expression) - 1; i++) {
+        if (expression[i] == expression[i + 1]) {
+            // Replace the common subexpression with a single occurrence
+            memmove(&expression[i], &expression[i + 1], strlen(expression) - i);
+        }
+    }
+
+    printf("Optimized expression: %s\n", expression);
+
+    return 0;
+}

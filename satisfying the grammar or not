@@ -1,0 +1,25 @@
+%{
+#include <stdio.h>
+int count_a = 0;
+int count_b = 0;
+%}
+
+%%
+a { count_a++; }
+b { count_b++; }
+\n {
+    if (count_a == count_b) {
+        printf("Input string satisfies the grammar.\n");
+    } else {
+        printf("Input string does not satisfy the grammar.\n");
+    }
+    count_a = 0;
+    count_b = 0;
+}
+. { /* ignore other characters */ }
+%%
+
+int main() {
+    yylex();
+    return 0;
+}

@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+char *input;
+char lookahead;
+
+void error() {
+    fprintf(stderr, "Error in parsing.\n");
+    exit(1);
+}
+
+void match(char expected) {
+    if (lookahead == expected) {
+        lookahead = *input++;
+    } else {
+        error();
+    }
+}
+
+void expr();
+void term();
+void factor();
+
+void match(char expected) {
+    if (lookahead == expected) {
+        lookahead = *input++;
+    } else {
+        error();
+    }
+}
+
+void expr() {
+    term();
+    while (1) {
+        if (lookahead == '+') {
+            match('+');
+            term();
+            printf(" + ");
+        } else if (lookahead == '-') {
+            match('-');
+            term();
+            printf(" - ");
+        } else {
+            break;
+        }
+    }
+}
+
+void term() {
+    factor();
+    while (1) {
+        if (lookahead == '*') {
+            match('*');
+            factor();
+            printf(" * ");
+        } else if (lookahead == '/') {
+            match('/');
+            factor();
+            printf(" / ");
+        } else {
+            break;
+        }
+    }
+}
+
+void factor() {
+    if (isdigit(lookahead)) {
+        printf("%c ", lookahead);
+        match(lookahead);
+    } else if (lookahead == '(') {
+        match('(');
+        expr();
+        match(')');
+    } else {
+        error();
+    }
+}
+
+int main() {
+    input = "3+4*5";
+    lookahead = *input;
+    
+    expr();
+    
+    return 0;
+}
